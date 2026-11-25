@@ -1,26 +1,28 @@
-#!/usr/bin/env python3
-"""The Most Shameless Lie — make.fun entry.
+# SPDX-License-Identifier: MIT
+"""Entry generator for the make.fun bounty "The Most Shameless Lie".
 
-Writes the most shameless lie — the classic unread-email excuse —
-in one to five words to /output/entry.txt, one line, at most 88 characters, no trailing newline.
+The program emits a single shameless lie — the timeless unread-email
+excuse — as exactly one line in /output/entry.txt, with no newline at
+the end. The bounty allows one to five words and at most 88 characters.
 """
 
-import os
+from pathlib import Path
 
-ENTRY = "I never got your email."
+LIE = "I never got your email."
+DESTINATION = Path("/output/entry.txt")
 
 
-def main():
-    line = ENTRY.strip()
-    words = line.split()
-    if not 1 <= len(words) <= 5:
-        raise ValueError(f"entry must be 1-5 words, got {len(words)}")
-    if not 1 <= len(line) <= 88:
-        raise ValueError(f"entry must be 1-88 characters, got {len(line)}")
-    os.makedirs("/output", exist_ok=True)
-    with open("/output/entry.txt", "w", encoding="utf-8", newline="") as f:
-        f.write(line)
+def build_entry() -> str:
+    text = LIE.strip()
+    assert 1 <= len(text.split()) <= 5, "word count outside 1-5"
+    assert 1 <= len(text) <= 88, "length outside 1-88 characters"
+    return text
+
+
+def run() -> None:
+    DESTINATION.parent.mkdir(parents=True, exist_ok=True)
+    DESTINATION.write_text(build_entry(), encoding="utf-8")
 
 
 if __name__ == "__main__":
-    main()
+    run()
