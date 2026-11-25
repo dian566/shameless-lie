@@ -16,6 +16,7 @@ def build_entry() -> str:
     text = LIE.strip()
     assert 1 <= len(text.split()) <= 5, "word count outside 1-5"
     assert 1 <= len(text) <= 88, "length outside 1-88 characters"
+    assert text.isascii() and text == text.strip(), "entry must be clean ASCII, no edge whitespace"
     return text
 
 
